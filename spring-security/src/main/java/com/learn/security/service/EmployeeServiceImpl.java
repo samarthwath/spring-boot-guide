@@ -1,7 +1,7 @@
-package com.learn.mvc.service;
+package com.learn.security.service;
 
-import com.learn.mvc.entity.Employee;
-import com.learn.mvc.repository.EmployeeRepository;
+import com.learn.security.entity.Employee;
+import com.learn.security.repository.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

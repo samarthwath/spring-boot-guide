@@ -1,4 +1,4 @@
-package com.learn.mvc.entity;
+package com.learn.security.entity;
 
 import jakarta.persistence.*;
 

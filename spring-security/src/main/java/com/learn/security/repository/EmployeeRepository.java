@@ -1,6 +1,6 @@
-package com.learn.mvc.repository;
+package com.learn.security.repository;
 
-import com.learn.mvc.entity.Employee;
+import com.learn.security.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

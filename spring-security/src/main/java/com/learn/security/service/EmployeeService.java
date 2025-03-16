@@ -1,6 +1,6 @@
-package com.learn.mvc.service;
+package com.learn.security.service;
 
-import com.learn.mvc.entity.Employee;
+import com.learn.security.entity.Employee;
 
 import java.util.List;
 

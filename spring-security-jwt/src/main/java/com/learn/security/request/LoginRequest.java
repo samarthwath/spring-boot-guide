@@ -1,7 +1,13 @@
 package com.learn.security.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class LoginRequest {
+    @NotBlank(message = "Username field cannot be blank.")
     private String username;
+
+    @NotBlank(message = "Password field cannot be blank.")
     private String password;
 
     public String getUsername() {

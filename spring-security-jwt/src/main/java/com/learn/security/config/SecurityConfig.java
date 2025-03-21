@@ -3,6 +3,7 @@ package com.learn.security.config;
 import com.learn.security.config.service.CustomUserDetailsService;
 import com.learn.security.jwt.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,48 +43,45 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())// Disabling CSRF
                 .sessionManagement(sessionConfigurer -> sessionConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/home/admin")
-                        .hasRole("ADMIN")
-                        .requestMatchers("/home/normal")
-                        .hasRole("NORMAL_USER")
-                        .requestMatchers("/home/public").permitAll()// Allowing public access
-                        .requestMatchers("/register-user", "/api/auth/signin", "/api/auth/signup").permitAll()
-                        .anyRequest().authenticated() // Securing all other endpoints
+                                .requestMatchers("/home/admin")
+                                .hasRole("ADMIN")
+                                .requestMatchers("/home/normal")
+                                .hasRole("NORMAL_USER")
+                                .requestMatchers("/home/public").permitAll()// Allowing public access
+                                .requestMatchers("/register-user", "/api/auth/signup", "/api/auth/signin").permitAll()
+                                .anyRequest().authenticated() // Securing all other endpoints
                 )
+                .authenticationProvider(authenticationProvider())
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
-    }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails firstUser = User
-                .withUsername("samarth")
-                .password(passwordEncoder().encode("samarth"))
-                .roles("NORMAL_USER")
-                .build();
-        UserDetails secondUser = User
-                .withUsername("samarth1")
-                .password(passwordEncoder().encode("samarth1"))
-                .roles("ADMIN")
-                .build();
-        UserDetails thirdUser = User
-                .withUsername("samarth2")
-                .password(passwordEncoder().encode("samarth2"))
-                .roles("CUSTOMER")
-                .build();
-        return new InMemoryUserDetailsManager(firstUser, secondUser, thirdUser);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails firstUser = User
+//                .withUsername("samarth")
+//                .password(passwordEncoder.encode("samarth"))
+//                .roles("NORMAL_USER")
+//                .build();
+//        UserDetails secondUser = User
+//                .withUsername("samarth1")
+//                .password(passwordEncoder.encode("samarth1"))
+//                .roles("ADMIN")
+//                .build();
+//        UserDetails thirdUser = User
+//                .withUsername("samarth2")
+//                .password(passwordEncoder.encode("samarth2"))
+//                .roles("CUSTOMER")
+//                .build();
+//        return new InMemoryUserDetailsManager(firstUser, secondUser, thirdUser);
+//    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder(10));
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(customUserDetailsService);
         return daoAuthenticationProvider;
     }
@@ -91,5 +89,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
     }
 }

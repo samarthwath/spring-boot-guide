@@ -13,6 +13,8 @@ public class Employee {
     private String name;
     @Column(name = "email")
     private String email;
+    @Column(name = "age")
+    private int age;
 
     public Employee(int id, String name, String email) {
         this.id = id;
@@ -38,6 +40,14 @@ public class Employee {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getName() {

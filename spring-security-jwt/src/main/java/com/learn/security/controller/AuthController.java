@@ -5,6 +5,8 @@ import com.learn.security.request.LoginRequest;
 import com.learn.security.request.SignupRequest;
 import com.learn.security.service.UserService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,8 @@ public class AuthController {
     @Autowired
     private ApplicationContext applicationContext;
 
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest signupRequest) {
         String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
@@ -44,12 +48,6 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> sigin(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(userService.verify(loginRequest));
-    }
-
-    @GetMapping("/debug-auth")
-    public ResponseEntity<?> debugAuth() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(auth);
     }
 
 }

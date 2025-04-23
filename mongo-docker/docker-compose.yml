@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    networks:
+      - health-care
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - ./mongo-data:/data/db
+
+
+  doctor-service:
+    build:
+      context: ./doctor-service
+    container_name: doctor-latest
+    environment:
+      - MONGO_URI=mongodb://root:root@mongodb:27017/healthcare?authSource=admin
+    depends_on:
+      - mongodb
+    ports:
+      - '8081:8080'
+    networks:
+     - health-care
+
+  patient-service:
+    build:
+      context: ./patient-service
+    container_name: patient-latest
+    environment:
+      - MONGO_URI=mongodb://root:root@mongodb:27017/healthcare?authSource=admin
+    depends_on:
+      - mongodb
+    ports:
+      - '8082:8080'
+    networks:
+      - health-care
+
+networks:
+  health-care:

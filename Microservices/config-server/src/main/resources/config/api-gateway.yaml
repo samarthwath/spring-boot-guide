@@ -1,0 +1,24 @@
+server:
+  port: 8083
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: "http://localhost:8761/eureka/"
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: employee-service
+          uri: http://employee-service
+          predicates:
+            - Path=/api/v1/employee/**
+
+        - id: department-service
+          uri: lb://department-service
+          predicates:
+            - Path=/api/v1/department/**
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG

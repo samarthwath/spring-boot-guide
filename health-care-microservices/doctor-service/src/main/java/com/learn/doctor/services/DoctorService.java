@@ -21,8 +21,8 @@ public class DoctorService {
 
     public Doctor saveDoctor(DoctorRequest doctorRequest) {
         logger.info("----- saveDoctor service: -----");
-        Doctor patient = new Doctor(doctorRequest.getFirstName(), doctorRequest.getLastName(), doctorRequest.getEmail(), doctorRequest.getAge(), doctorRequest.getPhone());
-        Doctor savedDoctorDetails = doctorRepository.save(patient);
+        Doctor doctor = new Doctor(doctorRequest.getFirstName(), doctorRequest.getLastName(), doctorRequest.getEmail(), doctorRequest.getSpeciality(), doctorRequest.getPhone(), doctorRequest.getStatus(), doctorRequest.getExperience());
+        Doctor savedDoctorDetails = doctorRepository.save(doctor);
         logger.info("----- saveDoctor: ----- {}", savedDoctorDetails);
         return savedDoctorDetails;
     }
@@ -50,9 +50,11 @@ public class DoctorService {
         Doctor doctor = doctorById.get();
         doctor.setFirstName(doctorRequest.getFirstName());
         doctor.setLastName(doctorRequest.getLastName());
-        doctor.setAge(doctorRequest.getAge());
+        doctor.setSpeciality(doctorRequest.getSpeciality());
         doctor.setEmail(doctorRequest.getEmail());
         doctor.setPhone(doctorRequest.getPhone());
+        doctor.setStatus(doctorRequest.getStatus());
+        doctor.setExperience(doctorRequest.getExperience());
         return doctorRepository.save(doctor);
     }
 

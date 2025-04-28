@@ -1,8 +1,10 @@
 package com.learn.doctor.utils;
 
+import java.util.List;
+
 public class ErrorMessage {
     private int status;
-    private String message;
+    private List<String> errors;
 
     public ErrorMessage() {
     }
@@ -15,16 +17,16 @@ public class ErrorMessage {
         this.status = status;
     }
 
-    public ErrorMessage(int status, String message) {
+    public ErrorMessage(int status, List<String> errors) {
+        this.errors = errors;
         this.status = status;
-        this.message = message;
     }
 
-    public String getMessage() {
-        return message;
+    public List<String> getErrors() {
+        return errors;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 }

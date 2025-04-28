@@ -16,19 +16,23 @@ public class Doctor {
         return "Doctor{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", age=" + age +
+                ", speciality='" + speciality + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
+                ", experience=" + experience +
+                ", status='" + status + '\'' +
                 '}';
     }
 
-    public Doctor(String firstName, String lastName, String email, int age, String phone) {
+    public Doctor(String firstName, String lastName, String email, String speciality, String phone, String status, int experience) {
         this.firstName = firstName;
-        this.age = age;
+        this.speciality = speciality;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.experience = experience;
+        this.status = status;
     }
 
     public String getLastName() {
@@ -39,8 +43,8 @@ public class Doctor {
         this.lastName = lastName;
     }
 
-    @Column(name = "age")
-    private int age;
+    @Column(name = "speciality")
+    private String speciality;
     @Column(name = "lastName")
     private String lastName;
     @Column(name = "email")
@@ -48,6 +52,11 @@ public class Doctor {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "experience")
+    private int experience;
+
+    @Column(name = "status")
+    private String status;
 
     public Doctor() {
     }
@@ -58,6 +67,22 @@ public class Doctor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPhone() {
@@ -84,11 +109,11 @@ public class Doctor {
         this.firstName = firstName;
     }
 
-    public int getAge() {
-        return age;
+    public String getSpeciality() {
+        return speciality;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
     }
 }

@@ -1,52 +1,76 @@
 services:
   mysqldb:
     image: mysql
-    container_name: mysqldb
+    container_name: mysql-database
     restart: always
     networks:
-      - health-care
+      - smart-health-care
     ports:
-      - "3307:3306"
+      - "3308:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: healthcare
+      MYSQL_DATABASE: SMART_HEALTHCARE
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data_health_care:/var/lib/mysql
 
   doctor-service:
     build:
       context: ./doctor-service
-    container_name: doctor-latest
+    container_name: doctor-service
     environment:
       MYSQL_HOST: mysqldb
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_PORT: 3306
-    ports:
-      - '8081:8080'
     networks:
-      - health-care
+      - smart-health-care
     depends_on:
       - mysqldb
+      - gateway-service
 
   patient-service:
     build:
       context: ./patient-service
-    container_name: patient-latest
+    container_name: patient-service
     environment:
       MYSQL_HOST: mysqldb
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_PORT: 3306
-    ports:
-      - '8082:8080'
     networks:
-      - health-care
+      - smart-health-care
     depends_on:
       - mysqldb
+      - gateway-service
+
+  auth-service:
+    build:
+      context: ./auth-service
+    container_name: auth-service
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+    depends_on:
+      - mysqldb
+      - gateway-service
+    networks:
+      smart-health-care:
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+    container_name: gateway-service
+    depends_on:
+      - mysqldb
+    networks:
+      smart-health-care:
+    ports:
+      - "8083:8080"
 
 networks:
-  health-care:
+  smart-health-care:
 
 volumes:
-  mysql_data:
+  mysql_data_health_care:

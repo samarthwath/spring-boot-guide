@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: auth
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/SMART_HEALTHCARE
+    username: ${MYSQL_USER:laravel}
+    password: ${MYSQL_PASSWORD:laravel}
+  jpa:
+    hibernate:
+      ddl-auto: update

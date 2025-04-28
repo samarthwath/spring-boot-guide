@@ -9,13 +9,20 @@ public class DoctorRequest {
     @NotEmpty(message = "Last name field is empty.")
     @Size(max = 20, min = 1, message = "Please enter valid last name.")
     private String lastName;
-    @NotEmpty(message = "Age field is empty.")
-    private int age;
+    @NotNull(message = "Experience field is empty.")
+    @Min(value = 1, message = "Experience should be of minimum 1 year.")
+    private int experience;
     @NotEmpty(message = "Email field is empty.")
     @Email(message = "Please enter valid email address.")
     private String email;
     @NotEmpty(message = "Phone Number field is empty.")
     private String phone;
+    @NotEmpty(message = "Speciality field is empty.")
+    @Size(max = 20, min = 5, message = "Please enter valid speciality.")
+    private String speciality;
+    @NotEmpty(message = "Status field is empty.")
+    @Size(max = 20, min = 5, message = "Please enter valid status field.")
+    private String status;
 
     public String getFirstName() {
         return firstName;
@@ -24,12 +31,43 @@ public class DoctorRequest {
     public DoctorRequest() {
     }
 
-    public DoctorRequest(String firstName, String lastName, int age, String email, String phone) {
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    @Override
+    public String toString() {
+        return "DoctorRequest{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", experience=" + experience +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", speciality='" + speciality + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
+    public DoctorRequest(String firstName, String lastName, String email, String speciality, String phone, String status, int experience) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
+        this.experience = experience;
         this.email = email;
         this.phone = phone;
+        this.speciality = speciality;
+        this.status = status;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setFirstName(String firstName) {
@@ -44,12 +82,12 @@ public class DoctorRequest {
         this.lastName = lastName;
     }
 
-    public int getAge() {
-        return age;
+    public int getExperience() {
+        return experience;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 
     public String getEmail() {

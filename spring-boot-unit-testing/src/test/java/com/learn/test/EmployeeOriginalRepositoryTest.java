@@ -19,7 +19,7 @@ public class EmployeeOriginalRepositoryTest {
 
     @Test
     public void testSaveEmployee() {
-        Employee employee = new Employee(1, "Demo", "demo@yopmail.com");
+        Employee employee = new Employee("Repo", "repo@yopmail.com");
         Employee savedEmployee = employeeOriginalRepository.save(employee);
         Employee employeeByName = employeeOriginalRepository.findEmployeeByName(employee.getName());
         Employee employeeByEmail = employeeOriginalRepository.findEmployeeByEmail(employee.getEmail());

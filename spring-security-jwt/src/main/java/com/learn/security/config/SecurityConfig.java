@@ -48,7 +48,7 @@ public class SecurityConfig {
                                 .requestMatchers("/home/normal")
                                 .hasRole("NORMAL_USER")
                                 .requestMatchers("/home/public").permitAll()// Allowing public access
-                                .requestMatchers("/register-user", "/api/auth/signup", "/api/auth/signin").permitAll()
+                                .requestMatchers("/register-user", "/api/auth/signup", "/api/auth/signin", "/actuator/*").permitAll()
                                 .anyRequest().authenticated() // Securing all other endpoints
                 )
                 .authenticationProvider(authenticationProvider())

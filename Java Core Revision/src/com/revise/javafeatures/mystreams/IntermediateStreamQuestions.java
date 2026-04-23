@@ -243,8 +243,6 @@ public class IntermediateStreamQuestions {
                 .toList();
         System.out.println(allNumbersStartsWithOne);
 
-
-
     }
 
 }

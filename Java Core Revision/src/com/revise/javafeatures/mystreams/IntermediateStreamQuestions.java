@@ -159,6 +159,13 @@ public class IntermediateStreamQuestions {
                 .orElse(null);
         System.out.println(longestString);
 
+        String otherWayLongestString = strings
+                .stream()
+                .max(Comparator.comparing(String::length))
+                .orElse(null);
+
+        System.out.println("Other way longest string: " + otherWayLongestString);
+
         //Partition numbers into even and odd:
         Map<Boolean, List<Integer>> partitionedList = numbers
                 .stream()
@@ -183,6 +190,15 @@ public class IntermediateStreamQuestions {
                 .max(Comparator.comparing(Employee::getSalary))
                 .orElse(null);
         System.out.println(employeeWithMaxSalary);
+
+
+        Employee maxSalariedEmployee = employees
+                .stream()
+                .sorted(Comparator.comparing(Employee::getSalary).reversed())
+                .findFirst()
+                .orElse(null);
+
+        System.out.println("My Max salaried employee: " + maxSalariedEmployee);
 
         //Average salary per department
         Map<String, Double> averageSalaryPerDepartment = employees
@@ -242,6 +258,21 @@ public class IntermediateStreamQuestions {
                 .map(element -> Integer.parseInt(element))
                 .toList();
         System.out.println(allNumbersStartsWithOne);
+
+        //List of string need to be converted into map.
+        Map<String, Integer> listConvertedToMap = strings
+                .stream()
+                .collect(Collectors.toMap(string -> string, string -> string.length()));
+        System.out.println(listConvertedToMap);
+
+        LinkedHashMap<String, Integer> sortedMap = listConvertedToMap
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> newValue, LinkedHashMap::new));
+
+        System.out.println(sortedMap);
+
 
     }
 

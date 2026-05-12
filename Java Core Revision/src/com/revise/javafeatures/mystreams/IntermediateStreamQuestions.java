@@ -273,6 +273,13 @@ public class IntermediateStreamQuestions {
 
         System.out.println(sortedMap);
 
+        LinkedHashMap<String, Integer> sortedMapAccordingToValue = listConvertedToMap
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparing(entry -> entry.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> newValue, LinkedHashMap::new));
+        System.out.println(sortedMapAccordingToValue);
+
 
     }
 

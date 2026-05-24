@@ -279,7 +279,18 @@ public class IntermediateStreamQuestions {
                 .sorted(Comparator.comparing(entry -> entry.getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> newValue, LinkedHashMap::new));
         System.out.println(sortedMapAccordingToValue);
-
+        String strNew="abab";
+        boolean isStringPali=true;
+        int left=0;
+        int right=strNew.length()-1;
+        while(left<right){
+            if(strNew.charAt(left)!=strNew.charAt(right)){
+                isStringPali=false;
+            }
+            left++;
+            right--;
+        }
+        System.out.println(isStringPali);
 
     }
 

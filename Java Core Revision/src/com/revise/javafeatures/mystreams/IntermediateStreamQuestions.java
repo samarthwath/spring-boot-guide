@@ -277,15 +277,15 @@ public class IntermediateStreamQuestions {
                 .entrySet()
                 .stream()
                 .sorted(Comparator.comparing(entry -> entry.getValue()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> newValue, LinkedHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> newValue, ()->new LinkedHashMap<String, Integer>()));
         System.out.println(sortedMapAccordingToValue);
-        String strNew="abab";
-        boolean isStringPali=true;
-        int left=0;
-        int right=strNew.length()-1;
-        while(left<right){
-            if(strNew.charAt(left)!=strNew.charAt(right)){
-                isStringPali=false;
+        String strNew = "abab";
+        boolean isStringPali = true;
+        int left = 0;
+        int right = strNew.length() - 1;
+        while (left < right) {
+            if (strNew.charAt(left) != strNew.charAt(right)) {
+                isStringPali = false;
             }
             left++;
             right--;

@@ -1,0 +1,34 @@
+{
+  "mcpServers": {
+    "spring-ai-mcp": {
+      "command": "C:\\Program Files\\Java\\jdk-21\\bin\\java.exe",
+      "args": [
+        "-jar",
+        "C:\\spring-boot\\spring-boot-guide\\mcp_server\\target\\mcp-0.0.1-SNAPSHOT.jar"
+      ]
+
+    },
+    "filesystem": {
+      "command": "C:\\Windows\\System32\\cmd.exe",
+      "args": [
+        "/d",
+        "/c",
+        "set \"PATH=C:\\Program Files\\nodejs;%PATH%\" && npx.cmd -y @modelcontextprotocol/server-filesystem \"C:\\development\\mcp\""
+      ]
+    },
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL": "DUMMY"
+      }
+    }
+  }
+}

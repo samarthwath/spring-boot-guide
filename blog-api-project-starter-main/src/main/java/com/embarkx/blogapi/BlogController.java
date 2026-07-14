@@ -1,8 +1,12 @@
 package com.embarkx.blogapi;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.http.*;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -10,44 +14,66 @@ public class BlogController {
 
     private static List<String> posts = new ArrayList<>();
 
+    @Value("${blog.content.max-length}")
+    private int maxContentLength;
+
     @PostMapping
-    public String createPost(@RequestParam String title, @RequestParam String content) {
+    public ResponseEntity<String> createPost(@RequestBody Posts request) {
+        String title = request.title();
+        String content = request.content();
+        if (title == null || title.isBlank() || content == null || content.isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title and content must not be empty");
+        }
+        if (content.length() < 10 || content.length() > 500) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content must be between 10 and 500 characters");
+        }
         String post = title + ":" + content;
         posts.add(post);
-        return "Post created";
+
+        return ResponseEntity.ok("Post created");
     }
 
     @GetMapping
-    public List<String> getAllPosts() {
-        return posts;
+    public ResponseEntity<List<String>> getAllPosts() {
+        if (posts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}")
-    public String getPost(@PathVariable int id) {
-        return posts.get(id);
+    public ResponseEntity<String> getPost(@PathVariable int id) {
+        if (id < 0 || id >= posts.size()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found for id " + id);
+        }
+        return ResponseEntity.ok(posts.get(id));
     }
 
     @PostMapping("/validate")
-    public String validateContent(@RequestParam String content) {
-        if (content.length() > 5000) {
-            return "Too long";
+    public ResponseEntity<String> validateContent(@RequestParam String content) {
+        if (content.length() > maxContentLength) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Too long");
         }
-        return "OK";
+        return ResponseEntity.ok("OK");
     }
 
     @DeleteMapping("/{id}")
-    public String deletePost(@PathVariable int id) {
+    public ResponseEntity<String> deletePost(@PathVariable int id) {
+        if (id < 0 || id >= posts.size()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found for id " + id);
+        }
         posts.remove(id);
-        return "Deleted";
+        return ResponseEntity.ok("Deleted");
     }
 
-@GetMapping("/total")
-public String getTotalWordCount() {
-    List<String> wordCounts = List.of("100", "200", "300");
-    String total = "";
-    for (String count : wordCounts) {
-        total += count;
+    @GetMapping("/total")
+    public ResponseEntity<String> getTotalWordCount() {
+        List<String> wordCounts = List.of("100", "200", "300");
+        int total = 0;
+        for (String count : wordCounts) {
+            total += Integer.parseInt(count);
+        }
+        return ResponseEntity.ok("Total words: " + total);
     }
-    return "Total words: " + total;
-}
+
 }

@@ -76,4 +76,28 @@ public class BlogController {
         return ResponseEntity.ok("Total words: " + total);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updatePost(@PathVariable int id, @RequestBody Posts request) {
+        String title = request.title();
+        String content = request.content();
+
+        if (id < 0 || id >= posts.size()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post not found for id " + id);
+        }
+
+        if (title == null || title.isBlank() || content == null || content.isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title and content must not be empty");
+        }
+
+        if (content.length() < 10 || content.length() > 500) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content must be between 10 and 500 characters");
+        }
+
+        String post = title + ":" + content;
+        posts.set(id, post);
+        return ResponseEntity.ok("Post updated");
+    }
+
+
+
 }

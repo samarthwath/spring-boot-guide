@@ -43,6 +43,9 @@ Employee {
 
     private Double salary;
 
+    @Column(name = "hire_date")
+    private String hireDate;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;

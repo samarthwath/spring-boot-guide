@@ -50,6 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setEmail(request.email());
         employee.setDepartment(request.department());
         employee.setSalary(request.salary());
+        employee.setHireDate(request.hireDate());
         updateAddress(employee, request.address());
         return toResponse(employeeRepository.save(employee));
     }
@@ -72,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setAddress(address);
         }
         address.setCity(request.city());
-        address.setAddress(request.address());
+        address.setState(request.state());
         address.setPinCode(request.pinCode());
     }
 
@@ -83,6 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .email(request.email())
                 .department(request.department())
                 .salary(request.salary())
+                .hireDate(request.hireDate())
                 .address(toAddressEntity(request.address()))
                 .build();
     }
@@ -90,7 +92,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private Address toAddressEntity(AddressRequest request) {
         return Address.builder()
                 .city(request.city())
-                .address(request.address())
+                .state(request.state())
                 .pinCode(request.pinCode())
                 .build();
     }
@@ -103,6 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employee.getEmail(),
                 employee.getDepartment(),
                 employee.getSalary(),
+                employee.getHireDate(),
                 toAddressResponse(employee.getAddress())
         );
     }
@@ -111,6 +114,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (address == null) {
             return null;
         }
-        return new AddressResponse(address.getCity(), address.getAddress(), address.getPinCode());
+        return new AddressResponse(address.getCity(), address.getState(), address.getPinCode());
     }
 }

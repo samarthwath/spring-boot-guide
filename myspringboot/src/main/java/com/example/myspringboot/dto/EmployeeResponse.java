@@ -7,6 +7,7 @@ public record EmployeeResponse(
         String email,
         String department,
         Double salary,
+        String hireDate,
         AddressResponse address
 ) {
 }

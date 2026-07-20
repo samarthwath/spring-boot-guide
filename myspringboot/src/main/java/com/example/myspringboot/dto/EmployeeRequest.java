@@ -23,6 +23,8 @@ public record EmployeeRequest(
         //@PositiveOrZero(message = "Salary must be zero or positive")
         Double salary,
 
+        String hireDate,
+
         @NotNull(message = "Address is required")
         @Valid
         AddressRequest address

@@ -29,7 +29,7 @@ public class Address {
     private String city;
 
     @Column(nullable = false)
-    private String address;
+    private String state;
 
     @Column(name = "pin_code", nullable = false)
     private String pinCode;

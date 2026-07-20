@@ -1,7 +1,9 @@
 package com.example.myspringboot.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record EmployeeRequest(
@@ -19,6 +21,10 @@ public record EmployeeRequest(
         String department,
 
         //@PositiveOrZero(message = "Salary must be zero or positive")
-        Double salary
+        Double salary,
+
+        @NotNull(message = "Address is required")
+        @Valid
+        AddressRequest address
 ) {
 }

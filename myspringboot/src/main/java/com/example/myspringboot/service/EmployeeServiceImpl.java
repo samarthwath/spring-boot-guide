@@ -1,13 +1,17 @@
 package com.example.myspringboot.service;
 
+import com.example.myspringboot.dto.AddressRequest;
+import com.example.myspringboot.dto.AddressResponse;
 import com.example.myspringboot.dto.EmployeeRequest;
 import com.example.myspringboot.dto.EmployeeResponse;
+import com.example.myspringboot.entity.Address;
 import com.example.myspringboot.entity.Employee;
 import com.example.myspringboot.exception.EmployeeNotFoundException;
 import com.example.myspringboot.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
@@ -46,6 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setEmail(request.email());
         employee.setDepartment(request.department());
         employee.setSalary(request.salary());
+        updateAddress(employee, request.address());
         return toResponse(employeeRepository.save(employee));
     }
 
@@ -60,6 +65,17 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
+    private void updateAddress(Employee employee, AddressRequest request) {
+        Address address = employee.getAddress();
+        if (address == null) {
+            address = new Address();
+            employee.setAddress(address);
+        }
+        address.setCity(request.city());
+        address.setAddress(request.address());
+        address.setPinCode(request.pinCode());
+    }
+
     private Employee toEntity(EmployeeRequest request) {
         return Employee.builder()
                 .firstName(request.firstName())
@@ -67,6 +83,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .email(request.email())
                 .department(request.department())
                 .salary(request.salary())
+                .address(toAddressEntity(request.address()))
+                .build();
+    }
+
+    private Address toAddressEntity(AddressRequest request) {
+        return Address.builder()
+                .city(request.city())
+                .address(request.address())
+                .pinCode(request.pinCode())
                 .build();
     }
 
@@ -77,7 +102,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employee.getLastName(),
                 employee.getEmail(),
                 employee.getDepartment(),
-                employee.getSalary()
+                employee.getSalary(),
+                toAddressResponse(employee.getAddress())
         );
+    }
+
+    private AddressResponse toAddressResponse(Address address) {
+        if (address == null) {
+            return null;
+        }
+        return new AddressResponse(address.getCity(), address.getAddress(), address.getPinCode());
     }
 }

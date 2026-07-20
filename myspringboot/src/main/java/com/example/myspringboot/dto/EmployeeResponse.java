@@ -6,6 +6,7 @@ public record EmployeeResponse(
         String lastName,
         String email,
         String department,
-        Double salary
+        Double salary,
+        AddressResponse address
 ) {
 }

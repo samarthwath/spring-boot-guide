@@ -1,5 +1,6 @@
 package com.embarkx.blogapi;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,11 +9,9 @@ import java.util.UUID;
 @Service
 public class NBlogService {
 
-    private final NewPostRepository newPostRepository;
+    @Autowired
+    private NewPostRepository newPostRepository;
 
-    public NBlogService(NewPostRepository newPostRepository) {
-        this.newPostRepository = newPostRepository;
-    }
 
     public NewPost createPost(String title, String content) {
         validateTitleAndContent(title, content);
@@ -24,8 +23,8 @@ public class NBlogService {
     }
 
     public NewPost getPostById(UUID id) {
-        return newPostRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException("Post not found for id " + id));
+        String sql = "SELECT * FROM blog_posts WHERE id = '" + id + "'";
+        return newPostRepository.findById(id).get();
     }
 
     public NewPost searchPostByTitle(String title) {
@@ -34,7 +33,11 @@ public class NBlogService {
     }
 
     public void deletePost(UUID id) {
-        newPostRepository.delete(getPostById(id));
+        try {
+            newPostRepository.deleteById(id);
+        } catch (Exception e) {
+
+        }
     }
 
     public void validateContentLength(String content) {

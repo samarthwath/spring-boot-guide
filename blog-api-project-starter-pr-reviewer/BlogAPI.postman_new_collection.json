@@ -1,0 +1,360 @@
+{
+  "info": {
+    "name": "Blog API - EmbarkX",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "v0 - /api/posts (BlogController, unchanged)",
+      "item": [
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\": \"My First Post\", \"content\": \"This is the content of my first post\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/posts",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Create Post - Empty Title (Bug: no validation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\": \"\", \"content\": \"Content with no title\"}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/posts",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Get All Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/posts",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Get Post By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/posts/0",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts", "0"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Get Post By ID - Out of Bounds (Bug: crashes)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/posts/999",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts", "999"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Validate Content - OK",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/posts/validate?content=Short content",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts", "validate"],
+              "query": [{ "key": "content", "value": "Short content" }],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Validate Content - Too Long (Bug: hardcoded 5000)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/posts/validate?content={{longContent}}",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts", "validate"],
+              "query": [{ "key": "content", "value": "{{longContent}}" }],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/posts/0",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts", "0"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Delete Post - Invalid Index (Bug: crashes)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/posts/999",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts", "999"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Get Total Word Count (Bug: string concat)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/posts/total",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "posts", "total"],
+              "protocol": "http"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "v1 - /api/v1/posts (NBlogController, NewPost storage)",
+      "item": [
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts?title=My First Post&content=This is the content of my first post",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts"],
+              "query": [
+                { "key": "title", "value": "My First Post" },
+                { "key": "content", "value": "This is the content of my first post" }
+              ],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Create Post - Empty Title (now returns 400)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts?title=&content=Content with no title here",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts"],
+              "query": [
+                { "key": "title", "value": "" },
+                { "key": "content", "value": "Content with no title here" }
+              ],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Create Post - Content Too Short (now returns 400)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts?title=Title&content=short",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts"],
+              "query": [
+                { "key": "title", "value": "Title" },
+                { "key": "content", "value": "short" }
+              ],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Create Post - Content Too Long (now returns 400)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts?title=Title&content={{content501chars}}",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts"],
+              "query": [
+                { "key": "title", "value": "Title" },
+                { "key": "content", "value": "{{content501chars}}" }
+              ],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Get All Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Get Post By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts/{{postId}}",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts", "{{postId}}"],
+              "protocol": "http"
+            },
+            "description": "Ids are now UUIDs assigned by NewPost at creation time (no more index-based ids). Set the {{postId}} collection variable from a Create Post response before running this."
+          }
+        },
+        {
+          "name": "Get Post By ID - Not Found (now returns 404, no longer crashes)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts/00000000-0000-0000-0000-000000000000",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts", "00000000-0000-0000-0000-000000000000"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Validate Content - OK",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts/validate?content=Short content",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts", "validate"],
+              "query": [{ "key": "content", "value": "Short content" }],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Validate Content - Too Long (Bug: hardcoded 5000, unchanged)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts/validate?content={{longContent}}",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts", "validate"],
+              "query": [{ "key": "content", "value": "{{longContent}}" }],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts/{{postId}}",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts", "{{postId}}"],
+              "protocol": "http"
+            },
+            "description": "Set the {{postId}} collection variable from a Create Post response before running this."
+          }
+        },
+        {
+          "name": "Delete Post - Not Found (now returns 404, no longer crashes)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts/00000000-0000-0000-0000-000000000000",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts", "00000000-0000-0000-0000-000000000000"],
+              "protocol": "http"
+            }
+          }
+        },
+        {
+          "name": "Get Total Word Count (Bug: string concat, unchanged)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/posts/total",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "v1", "posts", "total"],
+              "protocol": "http"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

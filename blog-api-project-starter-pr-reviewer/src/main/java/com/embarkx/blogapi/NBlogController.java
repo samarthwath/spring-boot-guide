@@ -1,6 +1,7 @@
 package com.embarkx.blogapi;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,28 +13,24 @@ import java.util.UUID;
 @RequestMapping("/api/v1/posts")
 public class NBlogController {
 
-    private final NBlogService nBlogService;
+    @Autowired
+    private NBlogService nBlogService;
+
+    /*private final NBlogService nBlogService;
 
     public NBlogController(NBlogService nBlogService) {
         this.nBlogService = nBlogService;
-    }
+    }*/
 
     @PostMapping
     public ResponseEntity<String> createPost(@RequestParam String title, @RequestParam String content) {
-        try {
-            nBlogService.createPost(title, content);
-            return ResponseEntity.ok("Post created");
-        } catch (InvalidPostException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        nBlogService.createPost(title, content);
+        return ResponseEntity.ok("Post created");
     }
 
     @GetMapping
     public ResponseEntity<List<NewPost>> getAllPosts() {
         List<NewPost> posts = nBlogService.getAllPosts();
-        if (posts.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(posts);
     }
 

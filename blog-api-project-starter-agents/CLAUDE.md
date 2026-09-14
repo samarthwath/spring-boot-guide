@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A minimal Spring Boot REST API for blog posts (`com.embarkx.blogapi`), used as a teaching/exercise project (part of the EmbarkX Java/Spring Boot course material). It is a standalone Maven module living under `agents/blog-api-project-starter-org` inside the larger `spring-boot-guide` repo — treat this directory as the project root for build/test purposes.
+A minimal Spring Boot REST API for blog posts (`com.embarkx.blogapi`), used as a teaching/exercise project (part of the EmbarkX Java/Spring Boot course material). It is a standalone Maven module living under `blog-api-project-starter-agents` inside the larger `spring-boot-guide` repo — treat this directory as the project root for build/test purposes.
 
 The included `BlogAPI.postman_collection.json` doubles as a spec of intentional bugs: several requests are explicitly named `(Bug: ...)` and describe defects that exist in `BlogController` on purpose (see Architecture below). Do not "fix" these unless asked — they are exercise fixtures, not accidental regressions.
 
 ## Commands
 
-Run all commands from this directory (`agents/blog-api-project-starter-org`).
+Run all commands from this directory (`blog-api-project-starter-agents`).
 
 ```
 ./mvnw compile                       # compile
@@ -28,7 +28,7 @@ There is no linter/formatter configured in this module.
 ## Architecture
 
 - `BlogApiApplication` — standard `@SpringBootApplication` entry point, no custom configuration.
-- `BlogController` (`/api/posts`) — the entire application logic lives in this one `@RestController`. There is no service layer, no repository/persistence layer, and no `Post` domain model: posts are stored as `"title:content"` strings in a `static List<String> posts` in-memory list. `id` in path variables is just the current list index, not a stable identifier.
+- `BlogController` (`/api/posts`) — the entire application logic lives in this one `@RestController`. There is no service layer, no repository/persistence layer, and no `Post` domain model: posts are stored as `"title:content"` strings in an in-memory `private final List<String> posts` (`CopyOnWriteArrayList`). `id` in path variables is just the current list index, not a stable identifier.
 - No database, no Spring Data, no security — this is intentionally bare-bones.
 
 ### Known intentional bugs (see `BlogAPI.postman_collection.json`)

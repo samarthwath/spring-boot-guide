@@ -23,9 +23,6 @@ Run all commands from this directory (`blog-api-project-starter-agents`).
 ./mvnw package                       # build the jar
 ```
 
-On Windows use `mvnw.cmd` instead of `./mvnw`.
-
-The `mvnw`/`mvnw.cmd` wrapper scripts are not currently committed in this module (only `.mvn/wrapper/maven-wrapper.properties` is present), so the `./mvnw`/`mvnw.cmd` commands above will fail with "file not found" until they're added. Use system `mvn` in their place (e.g. `mvn test`) until then.
 
 There is no linter/formatter configured in this module.
 
